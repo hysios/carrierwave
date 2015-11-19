@@ -58,8 +58,8 @@ module CarrierWave
       before_save :"write_#{column}_identifier"
       after_commit :"remove_#{column}!", :on => :destroy
       after_commit :"mark_remove_#{column}_false", :on => :update
-      after_save :"remove_previously_stored_#{column}"
-
+      after_commit :"remove_previously_stored_#{column}", :on => :update
+      
       class_eval <<-RUBY, __FILE__, __LINE__+1
         def #{column}=(new_file)
           column = _mounter(:#{column}).serialization_column
